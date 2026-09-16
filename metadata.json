@@ -1,0 +1,6 @@
+{
+  "name": "Brand Kampung",
+  "description": "Portal resmi Brand Kampung yang menaungi Teh Kampung (palet hijau segar) dan Dimsum Kampung (palet merah hangat) lengkap dengan katalog produk dan informasi detail unit usaha.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
