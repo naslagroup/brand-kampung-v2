@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrandUnit } from '../types';
-import { BRAND_KAMPUNG_INFO, TEH_KAMPUNG_INFO, DIMSUM_KAMPUNG_INFO } from '../data/brandData';
+import { BRAND_KAMPUNG_INFO, BRAND_ASSETS, TEH_KAMPUNG_INFO, DIMSUM_KAMPUNG_INFO } from '../data/brandData';
 import { Coffee, Utensils, ShieldCheck, MapPin, Phone, Mail, Instagram, Sparkles, Heart } from 'lucide-react';
 
 interface FooterProps {
@@ -20,11 +20,16 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-stone-800">
           {/* Col 1: Brand Kampung Overview (5 cols) */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-stone-700 to-red-600 p-0.5 flex items-center justify-center">
-                <div className="w-full h-full bg-stone-900 rounded-[10px] flex items-center justify-center text-amber-400 font-heading font-black text-lg">
-                  BK
-                </div>
+            <div className="flex items-center gap-3.5">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center shrink-0">
+                <img
+                  src={BRAND_ASSETS.logo}
+                  alt="Logo Resmi Brand Kampung"
+                  className="w-full h-full object-contain drop-shadow-md"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/logo-brand-kampung.png';
+                  }}
+                />
               </div>
               <span className="font-heading text-2xl font-black tracking-tight text-white">
                 BRAND KAMPUNG

@@ -1,7 +1,9 @@
 import { Product, ComboPackage, UnitInfo } from '../types';
+import brandLogoImg from '../assets/images/loko-brand-kampung.png';
 
 // Use generated assets with high-fidelity fallbacks
 export const BRAND_ASSETS = {
+  logo: brandLogoImg,
   heroBanner: '/src/assets/images/brand_kampung_hero_1789550016533.jpg',
   tehBanner: '/src/assets/images/teh_kampung_banner_1789550032383.jpg',
   dimsumBanner: '/src/assets/images/dimsum_banner_1789550048858.jpg',

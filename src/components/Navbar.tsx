@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrandUnit } from '../types';
-import { BRAND_KAMPUNG_INFO } from '../data/brandData';
+import { BRAND_KAMPUNG_INFO, BRAND_ASSETS } from '../data/brandData';
 import { ShoppingBag, Search, Sparkles, Coffee, Utensils, Layers } from 'lucide-react';
 
 interface NavbarProps {
@@ -57,17 +57,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="flex items-center gap-2.5 sm:gap-3 group text-left cursor-pointer focus:outline-none shrink-0"
             id="brand-kampung-logo-btn"
           >
-            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-emerald-700 via-stone-800 to-red-600 p-0.5 shadow-md flex items-center justify-center transition-transform group-hover:scale-105 shrink-0">
-              <div className="w-full h-full bg-stone-900 rounded-[10px] sm:rounded-[14px] flex items-center justify-center relative overflow-hidden">
-                {/* Visual leaf and steam icons */}
-                <div className="absolute -top-1 -left-1 text-emerald-400 opacity-60">
-                  <Coffee className="w-3.5 h-3.5" />
-                </div>
-                <div className="absolute -bottom-1 -right-1 text-red-400 opacity-60">
-                  <Utensils className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-base sm:text-lg font-black text-amber-400 font-heading tracking-wider">BK</span>
-              </div>
+            <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center transition-transform group-hover:scale-105 shrink-0">
+              <img
+                src={BRAND_ASSETS.logo}
+                alt="Logo Resmi Brand Kampung"
+                className="w-full h-full object-contain drop-shadow-sm"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/logo-brand-kampung.png';
+                }}
+              />
             </div>
             <div className="shrink-0">
               <div className="flex items-center gap-1.5">
