@@ -158,16 +158,21 @@ export const Footer: React.FC<FooterProps> = ({
                 <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <span>{TEH_KAMPUNG_INFO.outlets[0].address}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <a
-                  href={`https://wa.me/${BRAND_KAMPUNG_INFO.socialMedia.whatsapp}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-white"
-                >
-                  WhatsApp: +{BRAND_KAMPUNG_INFO.socialMedia.whatsapp}
-                </a>
+              <div className="flex items-start gap-2">
+                <Phone className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div>
+                  <a
+                    href={`https://wa.me/${BRAND_KAMPUNG_INFO.socialMedia.whatsapp}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-amber-300 transition-colors font-medium text-white block"
+                  >
+                    WA: {BRAND_KAMPUNG_INFO.socialMedia.whatsappDisplay}
+                  </a>
+                  <span className="text-[11px] text-stone-400">
+                    ({BRAND_KAMPUNG_INFO.socialMedia.contactPerson})
+                  </span>
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-red-400 shrink-0" />

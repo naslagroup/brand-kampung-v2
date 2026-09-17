@@ -283,9 +283,20 @@ export const UnitDetailSection: React.FC<UnitDetailSectionProps> = ({
                 <p className="text-xs text-stone-200 max-w-lg">
                   Konsultasikan lokasi, ketersediaan kuota wilayah, dan dapatkan proposal kemitraan lengkap langsung dari tim Brand Kampung Pusat.
                 </p>
+                <p className="text-xs text-amber-300 font-semibold mt-1.5 flex items-center gap-1.5">
+                  <span>Kontak Resmi WhatsApp: <strong>0857-9968-9175</strong> (Naasyith Dzaky)</span>
+                </p>
               </div>
 
-              <div className="flex items-center gap-3 w-full sm:w-auto">
+              <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+                <a
+                  href={`https://wa.me/${info.partnership.contactWhatsapp}?text=${encodeURIComponent(`Halo Mas Naasyith Dzaky, saya tertarik berkonsultasi kemitraan ${info.name}.`)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full sm:w-auto px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/30 text-center transition-all cursor-pointer whitespace-nowrap"
+                >
+                  Chat WhatsApp
+                </a>
                 <button
                   onClick={onOpenPartnership}
                   className="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold text-xs sm:text-sm shadow-md transition-transform active:scale-95 cursor-pointer whitespace-nowrap"

@@ -170,7 +170,7 @@ export const PartnershipModal: React.FC<PartnershipModalProps> = ({
   const currentPkg = PACKAGES[chosenUnit];
 
   const generateWhatsAppMessage = () => {
-    let message = `*HALO TIM KEMITRAAN PUSAT BRAND KAMPUNG*\n`;
+    let message = `*HALO KEMITRAAN PUSAT BRAND KAMPUNG (NAASYITH DZAKY)*\n`;
     message += `Saya tertarik untuk bergabung menjadi Mitra Resmi:\n\n`;
     message += `📋 *Paket yang Dipilih:* ${currentPkg.name} (${currentPkg.price})\n`;
     message += `👤 *Nama Lengkap:* ${partnerName.trim() || '(Belum diisi)'}\n`;
@@ -532,7 +532,7 @@ export const PartnershipModal: React.FC<PartnershipModalProps> = ({
                     setPartnerPhone(e.target.value);
                     if (formError) setFormError(null);
                   }}
-                  placeholder="Contoh: 08123456789"
+                  placeholder="Contoh: 085799689175"
                   className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-stone-400 focus:bg-white transition-all text-stone-900 placeholder-stone-400"
                 />
               </div>
@@ -587,9 +587,17 @@ export const PartnershipModal: React.FC<PartnershipModalProps> = ({
         {/* Modal Footer & Actions */}
         <div className="bg-stone-50 p-4 sm:p-5 border-t border-stone-200 shrink-0 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-xs text-stone-600 text-center sm:text-left">
-            <span className="font-semibold text-stone-800">Layanan Kemitraan Pusat:</span> 08.00 – 21.00 WIB
+            <span className="font-semibold text-stone-800">Admin Kemitraan:</span>{' '}
+            <a
+              href={`https://wa.me/${BRAND_KAMPUNG_INFO.socialMedia.whatsapp}`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-emerald-700 hover:text-emerald-800 font-bold underline decoration-emerald-500/50"
+            >
+              WA: {BRAND_KAMPUNG_INFO.socialMedia.whatsappDisplay} ({BRAND_KAMPUNG_INFO.socialMedia.contactPerson})
+            </a>
             <span className="hidden sm:inline"> • </span>
-            <span className="text-stone-500 block sm:inline">Respon Cepat via WhatsApp Official</span>
+            <span className="text-stone-500 block sm:inline">Respon Cepat 08.00 – 21.00 WIB</span>
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">

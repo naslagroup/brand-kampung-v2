@@ -339,8 +339,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               <Send className="w-4 h-4" />
               <span>Kirim Pesanan ke WhatsApp</span>
             </button>
-            <p className="text-[10px] text-center text-stone-400">
-              Pesanan akan otomatis diformat dan dikirim ke admin Brand Kampung Pusat.
+            <p className="text-[10px] text-center text-stone-500">
+              Pesanan akan otomatis diformat dan dikirim ke admin Brand Kampung: <span className="font-semibold text-stone-700">0857-9968-9175 ({BRAND_KAMPUNG_INFO.socialMedia.contactPerson})</span>.
             </p>
           </div>
         )}

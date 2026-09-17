@@ -21,7 +21,9 @@ export const BRAND_KAMPUNG_INFO = {
   socialMedia: {
     instagramTeh: '@tehkampung',
     instagramDimsum: '@dimsumkampung',
-    whatsapp: '6281234567890',
+    whatsapp: '6285799689175',
+    whatsappDisplay: '0857-9968-9175',
+    contactPerson: 'Naasyith Dzaky',
     email: 'kemitraan.kampung@gmail.com',
   },
   stats: [
@@ -91,7 +93,9 @@ export const TEH_KAMPUNG_INFO: UnitInfo = {
       'Gelas Cup Sablon Brand Kampung 500 pcs + Sedotan',
       'Buku Panduan Resep & Video Training Online',
     ],
-    contactWhatsapp: '6281234567890',
+    contactWhatsapp: '6285799689175',
+    contactPerson: 'Naasyith Dzaky',
+    whatsappDisplay: '0857-9968-9175',
     instagram: '@tehkampung',
   },
   outlets: [
@@ -132,7 +136,7 @@ export const TEH_KAMPUNG_INFO: UnitInfo = {
     },
     {
       q: 'Bagaimana cara bergabung kemitraan Teh Kampung?',
-      a: 'Cukup klik tombol "Daftar Kemitraan" di halaman ini atau hubungi WhatsApp resmi kami di nomor 0812-3456-7890. Tim kami akan mengirimkan proposal detail dan membantu proses hingga siap jualan.',
+      a: 'Cukup klik tombol "Daftar Kemitraan" di halaman ini atau hubungi WhatsApp resmi kami di nomor 0857-9968-9175 (Naasyith Dzaky). Tim kami akan mengirimkan proposal detail dan membantu proses hingga siap jualan.',
     },
   ],
 };
@@ -196,7 +200,9 @@ export const DIMSUM_KAMPUNG_INFO: UnitInfo = {
       'Chili Oil Kampung 5 Liter & Saus Dimsum Manis Gurih',
       'Packaging Mika & Box Ramah Lingkungan 200 pcs',
     ],
-    contactWhatsapp: '6281234567890',
+    contactWhatsapp: '6285799689175',
+    contactPerson: 'Naasyith Dzaky',
+    whatsappDisplay: '0857-9968-9175',
     instagram: '@dimsumkampung',
   },
   outlets: [
@@ -238,6 +244,10 @@ export const DIMSUM_KAMPUNG_INFO: UnitInfo = {
     {
       q: 'Apakah bisa dibeli dalam bentuk Frozen (Beku)?',
       a: 'Bisa! Kami menyediakan kemasan vacuum beku isi 10 pcs dan 20 pcs lengkap dengan cup Chili Oil yang bisa disimpan di freezer rumah hingga 2 bulan.',
+    },
+    {
+      q: 'Bagaimana cara bergabung kemitraan Dimsum Kampung?',
+      a: 'Cukup klik tombol "Daftar Kemitraan" di aplikasi atau hubungi WhatsApp resmi kami di nomor 0857-9968-9175 (Naasyith Dzaky) untuk konsultasi paket kemitraan dan panduan usaha.',
     },
   ],
 };

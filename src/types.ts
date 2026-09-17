@@ -86,6 +86,8 @@ export interface UnitInfo {
     benefits: string[];
     packageIncludes: string[];
     contactWhatsapp: string;
+    contactPerson?: string;
+    whatsappDisplay?: string;
     instagram: string;
   };
   outlets: {

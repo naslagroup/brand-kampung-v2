@@ -37,12 +37,22 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div className="flex items-center gap-2.5 text-[11px] text-stone-300 whitespace-nowrap shrink-0">
             <span>Pusat: {BRAND_KAMPUNG_INFO.origin}</span>
+            <span className="text-stone-600 hidden sm:inline">•</span>
+            <a
+              href={`https://wa.me/${BRAND_KAMPUNG_INFO.socialMedia.whatsapp}`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors"
+              title="Hubungi WhatsApp Naasyith Dzaky"
+            >
+              WA: {BRAND_KAMPUNG_INFO.socialMedia.whatsappDisplay} ({BRAND_KAMPUNG_INFO.socialMedia.contactPerson})
+            </a>
             <span className="text-stone-600">•</span>
             <button
               onClick={onOpenPartnership}
               className="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-2 transition-colors cursor-pointer"
             >
-              Info Kemitraan Booth
+              Kemitraan
             </button>
           </div>
         </div>
