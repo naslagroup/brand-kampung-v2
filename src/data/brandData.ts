@@ -3,12 +3,17 @@ import brandLogoImg from '../assets/images/loko-brand-kampung.png';
 import tehBannerImg from '../assets/images/teh_kampung_official_1789670507221.jpg';
 import dimsumBannerImg from '../assets/images/dimsum_kampung_official_1789670523167.jpg';
 
-// Official Brand Kampung unit banners and logo assets
+// Official Brand Kampung unit banners and logo assets from /public directory
 export const BRAND_ASSETS = {
-  logo: brandLogoImg,
-  heroBanner: '/src/assets/images/brand_kampung_hero_1789550016533.jpg',
-  tehBanner: tehBannerImg,
-  dimsumBanner: dimsumBannerImg,
+  logo: '/logo-brand-kampung.png',
+  heroBanner: '/banner-teh-kampung.jpeg',
+  tehBanner: '/banner-teh-kampung.jpeg',
+  dimsumBanner: '/banner-dimsum-kampung.jpeg',
+  tehBannerJpg: '/banner-teh-kampung.jpg',
+  dimsumBannerJpg: '/banner-dimsum-kampung.jpg',
+  logoFallback: brandLogoImg,
+  tehBannerFallback: tehBannerImg,
+  dimsumBannerFallback: dimsumBannerImg,
 };
 
 export const BRAND_KAMPUNG_INFO = {

@@ -134,7 +134,12 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
                 alt="Spanduk Resmi Teh Kampung Tambakroto"
                 className="w-full h-full object-cover object-center group-hover:scale-[1.015] transition-transform duration-500"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/banner-teh-kampung.jpg';
+                  const target = e.target as HTMLImageElement;
+                  if (!target.src.includes('.jpg')) {
+                    target.src = BRAND_ASSETS.tehBannerJpg;
+                  } else {
+                    target.src = BRAND_ASSETS.tehBannerFallback;
+                  }
                 }}
               />
               {/* Hover Overlay */}
@@ -235,6 +240,11 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
                     >
                       <source src="/video-teh-kampung.mp4" type="video/mp4" />
                       <source src="/teh-kampung.mp4" type="video/mp4" />
+                      <source src="/video-teh.mp4" type="video/mp4" />
+                      <source src="/teh.mp4" type="video/mp4" />
+                      <source src="/banner-teh.mp4" type="video/mp4" />
+                      <source src="/video-teh-kampung.webm" type="video/webm" />
+                      <source src="/teh-kampung.webm" type="video/webm" />
                       <source
                         src="https://assets.mixkit.co/videos/preview/mixkit-pouring-hot-tea-into-a-glass-cup-41121-large.mp4"
                         type="video/mp4"
@@ -388,7 +398,12 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
                 alt="Spanduk Resmi Dimsum Kampung - 100% Halal"
                 className="w-full h-full object-cover object-center group-hover:scale-[1.015] transition-transform duration-500"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/banner-dimsum-kampung.jpg';
+                  const target = e.target as HTMLImageElement;
+                  if (!target.src.includes('.jpg')) {
+                    target.src = BRAND_ASSETS.dimsumBannerJpg;
+                  } else {
+                    target.src = BRAND_ASSETS.dimsumBannerFallback;
+                  }
                 }}
               />
               {/* Hover Overlay */}
@@ -490,6 +505,11 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
                     >
                       <source src="/video-dimsum-kampung.mp4" type="video/mp4" />
                       <source src="/dimsum-kampung.mp4" type="video/mp4" />
+                      <source src="/video-dimsum.mp4" type="video/mp4" />
+                      <source src="/dimsum.mp4" type="video/mp4" />
+                      <source src="/banner-dimsum.mp4" type="video/mp4" />
+                      <source src="/video-dimsum-kampung.webm" type="video/webm" />
+                      <source src="/dimsum-kampung.webm" type="video/webm" />
                       <source
                         src="https://assets.mixkit.co/videos/preview/mixkit-top-view-of-a-person-opening-a-steaming-pot-41551-large.mp4"
                         type="video/mp4"

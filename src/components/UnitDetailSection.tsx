@@ -113,7 +113,12 @@ export const UnitDetailSection: React.FC<UnitDetailSectionProps> = ({
                 alt={`Spanduk Resmi ${info.name}`}
                 className="w-full h-full object-cover object-center"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = isTeh ? '/banner-teh-kampung.jpg' : '/banner-dimsum-kampung.jpg';
+                  const target = e.target as HTMLImageElement;
+                  if (!target.src.includes('.jpg')) {
+                    target.src = isTeh ? BRAND_ASSETS.tehBannerJpg : BRAND_ASSETS.dimsumBannerJpg;
+                  } else {
+                    target.src = isTeh ? BRAND_ASSETS.tehBannerFallback : BRAND_ASSETS.dimsumBannerFallback;
+                  }
                 }}
               />
             </div>

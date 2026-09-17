@@ -41,7 +41,12 @@ export const BusinessUnitCards: React.FC<BusinessUnitCardsProps> = ({
                 alt="Teh Kampung Banner"
                 className="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-700"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/banner-teh-kampung.jpg';
+                  const target = e.target as HTMLImageElement;
+                  if (!target.src.includes('.jpg')) {
+                    target.src = BRAND_ASSETS.tehBannerJpg;
+                  } else {
+                    target.src = BRAND_ASSETS.tehBannerFallback;
+                  }
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/40 to-transparent flex flex-col justify-between p-6">
@@ -121,7 +126,12 @@ export const BusinessUnitCards: React.FC<BusinessUnitCardsProps> = ({
                 alt="Dimsum Kampung Banner"
                 className="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-700"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/banner-dimsum-kampung.jpg';
+                  const target = e.target as HTMLImageElement;
+                  if (!target.src.includes('.jpg')) {
+                    target.src = BRAND_ASSETS.dimsumBannerJpg;
+                  } else {
+                    target.src = BRAND_ASSETS.dimsumBannerFallback;
+                  }
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-red-950 via-red-950/40 to-transparent flex flex-col justify-between p-6">
