@@ -1,7 +1,23 @@
 import React, { useState, useRef } from 'react';
 import { BrandUnit } from '../types';
-import { BRAND_ASSETS, BRAND_KAMPUNG_INFO, TEH_KAMPUNG_INFO, DIMSUM_KAMPUNG_INFO } from '../data/brandData';
-import { Coffee, Utensils, Award, ShieldCheck, Sparkles, ArrowRight, MapPin, Store, Volume2, VolumeX, Upload } from 'lucide-react';
+import { BRAND_ASSETS } from '../data/brandData';
+import {
+  Coffee,
+  Utensils,
+  ShieldCheck,
+  Sparkles,
+  ArrowRight,
+  MapPin,
+  Store,
+  Volume2,
+  VolumeX,
+  Image as ImageIcon,
+  ZoomIn,
+  X,
+  Download,
+  CheckCircle2,
+  Smartphone,
+} from 'lucide-react';
 
 interface BrandHeroProps {
   activeUnit: BrandUnit;
@@ -16,43 +32,23 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
   onOpenPartnership,
   onViewUnitDetail,
 }) => {
-  // Dedicated state for Teh Kampung Video
+  // Dedicated state for Teh Kampung Video sound
   const [isTehVideoMuted, setIsTehVideoMuted] = useState(true);
-  const [customTehVideoUrl, setCustomTehVideoUrl] = useState<string | null>(null);
   const tehVideoRef = useRef<HTMLVideoElement>(null);
-  const tehFileInputRef = useRef<HTMLInputElement>(null);
 
-  // Dedicated state for Dimsum Kampung Video
+  // Dedicated state for Dimsum Kampung Video sound
   const [isDimsumVideoMuted, setIsDimsumVideoMuted] = useState(true);
-  const [customDimsumVideoUrl, setCustomDimsumVideoUrl] = useState<string | null>(null);
   const dimsumVideoRef = useRef<HTMLVideoElement>(null);
-  const dimsumFileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleTehVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setCustomTehVideoUrl(url);
-      setIsTehVideoMuted(false);
-      if (tehVideoRef.current) {
-        tehVideoRef.current.load();
-        tehVideoRef.current.play().catch(() => {});
-      }
-    }
-  };
-
-  const handleDimsumVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setCustomDimsumVideoUrl(url);
-      setIsDimsumVideoMuted(false);
-      if (dimsumVideoRef.current) {
-        dimsumVideoRef.current.load();
-        dimsumVideoRef.current.play().catch(() => {});
-      }
-    }
-  };
+  // Lightbox modal state for full-screen banner inspection
+  const [activeBannerModal, setActiveBannerModal] = useState<{
+    isOpen: boolean;
+    url: string;
+    title: string;
+    subtitle: string;
+    unit: 'teh' | 'dimsum';
+    features: string[];
+  } | null>(null);
 
   // Dedicated Separate Section: TEH KAMPUNG (PALET HIJAU SEGAR)
   const renderTehKampungSection = (standalone = false) => (
@@ -69,17 +65,92 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
       <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-emerald-500/20 blur-3xl pointer-events-none"></div>
 
       <div className={`${standalone ? 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' : 'w-full'} relative z-10`}>
-        <div className="space-y-6">
-          {/* Unit Tag */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-800/80 border border-emerald-500/40 text-emerald-200 text-xs font-semibold backdrop-blur-xs">
-            <Coffee className="w-3.5 h-3.5 text-emerald-300" />
-            <span>Video & Narasi Khusus • Unit Usaha Teh Kampung</span>
+        <div className="space-y-6 sm:space-y-8">
+          {/* Unit Tag Header */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-800/80 border border-emerald-500/40 text-emerald-200 text-xs font-semibold backdrop-blur-xs">
+              <Coffee className="w-3.5 h-3.5 text-emerald-300" />
+              <span>Gambar Spanduk Resmi & Video Mobile • Unit Teh Kampung</span>
+            </div>
+            <span className="text-xs text-amber-300 font-bold bg-emerald-900/80 px-3 py-1 rounded-full border border-emerald-500/30">
+              Otentik Tambakroto • Wasgitel
+            </span>
           </div>
 
-          {/* Main Content: Text & Video Side-by-Side */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+          {/* 1. GAMBAR SPANDUK RESMI TEH KAMPUNG (BANNER SHOWCASE) */}
+          <div className="rounded-2xl overflow-hidden border-2 border-emerald-400/50 bg-stone-950 shadow-2xl shadow-emerald-950/60 transition-all">
+            <div className="px-4 py-2.5 bg-gradient-to-r from-emerald-900 via-teal-900 to-emerald-950 border-b border-emerald-500/30 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <ImageIcon className="w-4 h-4 text-amber-300 shrink-0" />
+                <span className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                  Spanduk Resmi Outlet • TEH KAMPUNG TAMBAKROTO
+                </span>
+              </div>
+              <button
+                onClick={() =>
+                  setActiveBannerModal({
+                    isOpen: true,
+                    url: BRAND_ASSETS.tehBanner,
+                    title: 'Spanduk Resmi Teh Kampung Tambakroto',
+                    subtitle: 'Visual Brand Outlet Resmi Kemitraan Teh Kampung',
+                    unit: 'teh',
+                    features: [
+                      'Ilustrasi resmi dua pendiri Teh Kampung & Dimsum Kampung',
+                      'Tipografi otentik 3D "TEH KAMPUNG TAMBAKROTO"',
+                      'Visual cup jumbo 22oz seduhan segar daun melati & gula tebu asli',
+                      'Kanal kemitraan resmi Instagram: @tehkampung',
+                    ],
+                  })
+                }
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-amber-300 text-xs font-bold border border-emerald-400/40 transition-all cursor-pointer shadow-xs"
+                title="Klik untuk melihat gambar spanduk ukuran penuh"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+                <span>Perbesar Spanduk</span>
+              </button>
+            </div>
+
+            {/* Widescreen Banner Image */}
+            <div
+              className="relative aspect-[16/6] sm:aspect-[16/5] md:aspect-[16/4.6] w-full overflow-hidden cursor-pointer group bg-stone-900"
+              onClick={() =>
+                setActiveBannerModal({
+                  isOpen: true,
+                  url: BRAND_ASSETS.tehBanner,
+                  title: 'Spanduk Resmi Teh Kampung Tambakroto',
+                  subtitle: 'Visual Brand Outlet Resmi Kemitraan Teh Kampung',
+                  unit: 'teh',
+                  features: [
+                    'Ilustrasi resmi dua pendiri Teh Kampung & Dimsum Kampung',
+                    'Tipografi otentik 3D "TEH KAMPUNG TAMBAKROTO"',
+                    'Visual cup jumbo 22oz seduhan segar daun melati & gula tebu asli',
+                    'Kanal kemitraan resmi Instagram: @tehkampung',
+                  ],
+                })
+              }
+            >
+              <img
+                src={BRAND_ASSETS.tehBanner}
+                alt="Spanduk Resmi Teh Kampung Tambakroto"
+                className="w-full h-full object-cover object-center group-hover:scale-[1.015] transition-transform duration-500"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/banner-teh-kampung.jpg';
+                }}
+              />
+              {/* Hover Overlay */}
+              <div className="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                <span className="px-4 py-2 rounded-xl bg-black/80 text-white text-xs font-bold flex items-center gap-2 backdrop-blur-xs border border-white/20 shadow-2xl">
+                  <ZoomIn className="w-4 h-4 text-amber-300" />
+                  Klik untuk Memperbesar Gambar Spanduk
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 2. DEDICATED CONTENT: TEKS NARASI & PEMUTAR VIDEO FORMAT MOBILE */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-2">
             {/* Left Column: Text TEH KAMPUNG TAMBAKROTO & WASGITEL */}
-            <div className="lg:col-span-7 space-y-4">
+            <div className="lg:col-span-7 space-y-5">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-white drop-shadow-sm">
@@ -139,89 +210,91 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
               </div>
             </div>
 
-            {/* Right Column: Dedicated Video Player Teh Kampung */}
-            <div className="lg:col-span-5">
-              <div className="relative rounded-2xl overflow-hidden border-2 border-emerald-400/40 shadow-2xl shadow-emerald-950/60 bg-stone-950 group">
-                <div className="relative aspect-[4/3] sm:aspect-video lg:aspect-[4/3] w-full">
-                  <video
-                    id="video-teh-kampung"
-                    ref={tehVideoRef}
-                    className="w-full h-full object-cover"
-                    autoPlay
-                    loop
-                    muted={isTehVideoMuted}
-                    playsInline
-                    poster={BRAND_ASSETS.tehBanner}
-                  >
-                    {customTehVideoUrl && (
-                      <source src={customTehVideoUrl} type="video/mp4" />
-                    )}
-                    <source src="/video-teh-kampung.mp4" type="video/mp4" />
-                    <source src="/teh-kampung.mp4" type="video/mp4" />
-                    <source
-                      src="https://assets.mixkit.co/videos/preview/mixkit-pouring-hot-tea-into-a-glass-cup-41121-large.mp4"
-                      type="video/mp4"
-                    />
-                    <img
-                      src={BRAND_ASSETS.tehBanner}
-                      alt="Teh Kampung Tambakroto"
+            {/* Right Column: Dedicated Video Player Teh Kampung (UKURAN MOBILE 9:16) */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center">
+              <div className="w-full max-w-[270px] sm:max-w-[295px]">
+                {/* Mobile Smartphone Frame Container */}
+                <div className="relative rounded-[2.5rem] p-2 bg-gradient-to-b from-stone-700 via-stone-900 to-black border-2 border-emerald-400/60 shadow-2xl shadow-emerald-950/80">
+                  {/* Top Camera Notch / Dynamic Island */}
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/90 rounded-full z-30 flex items-center justify-center gap-1.5 border border-white/10 shadow-xs">
+                    <span className="w-2 h-2 rounded-full bg-stone-700"></span>
+                    <span className="w-5 h-1 rounded-full bg-stone-800"></span>
+                  </div>
+
+                  {/* Video Box (9:16 Vertical Mobile Aspect Ratio) */}
+                  <div className="relative aspect-[9/16] w-full rounded-[2rem] overflow-hidden bg-black group">
+                    <video
+                      id="video-teh-kampung"
+                      ref={tehVideoRef}
                       className="w-full h-full object-cover"
-                    />
-                  </video>
-
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-stone-950/20 to-stone-950/30 pointer-events-none" />
-
-                  {/* Live Badge */}
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-600/90 text-white text-[11px] font-bold shadow-md backdrop-blur-xs">
-                      <span className="w-2 h-2 rounded-full bg-emerald-200 animate-ping" />
-                      Video Seduhan Teh Asli
-                    </span>
-                  </div>
-
-                  {/* Controls: Audio Mute/Unmute & Select Local Video File */}
-                  <div className="absolute top-3 right-3 flex items-center gap-2">
-                    <label
-                      className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 hover:bg-black/80 text-[11px] text-emerald-200 border border-white/20 transition-all cursor-pointer shadow-md"
-                      title="Putar video rekaman Teh Kampung dari file perangkat"
+                      autoPlay
+                      loop
+                      muted={isTehVideoMuted}
+                      playsInline
+                      poster={BRAND_ASSETS.tehBanner}
                     >
-                      <Upload className="w-3 h-3 text-amber-300" />
-                      <span className="hidden sm:inline">Pilih Video Teh</span>
-                      <input
-                        ref={tehFileInputRef}
-                        type="file"
-                        accept="video/*"
-                        className="hidden"
-                        onChange={handleTehVideoUpload}
+                      <source src="/video-teh-kampung.mp4" type="video/mp4" />
+                      <source src="/teh-kampung.mp4" type="video/mp4" />
+                      <source
+                        src="https://assets.mixkit.co/videos/preview/mixkit-pouring-hot-tea-into-a-glass-cup-41121-large.mp4"
+                        type="video/mp4"
                       />
-                    </label>
-                    <button
-                      onClick={() => setIsTehVideoMuted(!isTehVideoMuted)}
-                      className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white transition-all backdrop-blur-xs border border-white/20 cursor-pointer shadow-md"
-                      title={isTehVideoMuted ? 'Nyalakan Suara Teh' : 'Bisukan Suara Teh'}
-                      aria-label="Toggle suara video teh"
-                    >
-                      {isTehVideoMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-emerald-300" />}
-                    </button>
-                  </div>
+                      <img
+                        src={BRAND_ASSETS.tehBanner}
+                        alt="Teh Kampung Tambakroto"
+                        className="w-full h-full object-cover"
+                      />
+                    </video>
 
-                  {/* Bottom Caption */}
-                  <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-1 text-xs text-emerald-100">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 font-semibold text-white">
-                        <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
-                        <span>Otentik Asli Tambakroto</span>
-                      </div>
-                      <span className="bg-amber-400 text-stone-900 px-2 py-0.5 rounded text-[11px] font-extrabold tracking-wide">
-                        WASGITEL
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-transparent to-stone-950/40 pointer-events-none" />
+
+                    {/* Live Mobile Badge */}
+                    <div className="absolute top-8 left-3 z-20 flex items-center gap-1">
+                      <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-600/90 text-white text-[10px] font-bold shadow-md backdrop-blur-xs">
+                        <Smartphone className="w-3 h-3 text-emerald-200" />
+                        <span>Reels / Shorts</span>
                       </span>
                     </div>
-                    <p className="text-[11px] text-stone-300 line-clamp-1">
-                      Depan Masjid Tambakroto, Kec. Sayung, Kab. Demak
-                    </p>
+
+                    {/* Audio Mute/Unmute Control */}
+                    <div className="absolute top-8 right-3 z-20">
+                      <button
+                        onClick={() => setIsTehVideoMuted(!isTehVideoMuted)}
+                        className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white transition-all backdrop-blur-xs border border-white/20 cursor-pointer shadow-md"
+                        title={isTehVideoMuted ? 'Nyalakan Suara Teh' : 'Bisukan Suara Teh'}
+                        aria-label="Toggle suara video teh"
+                      >
+                        {isTehVideoMuted ? (
+                          <VolumeX className="w-3.5 h-3.5" />
+                        ) : (
+                          <Volume2 className="w-3.5 h-3.5 text-emerald-300" />
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Bottom Caption Overlay */}
+                    <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-1 text-xs text-emerald-100 z-20">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5 font-bold text-white text-xs">
+                          <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                          <span>Asli Tambakroto</span>
+                        </div>
+                        <span className="bg-amber-400 text-stone-900 px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wide">
+                          WASGITEL
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-stone-300 line-clamp-2">
+                        Seduhan Segar Daun Melati Pilihan • Cup Jumbo 22oz
+                      </p>
+                    </div>
                   </div>
                 </div>
+
+                {/* Subtitle Information */}
+                <p className="text-center text-[11px] text-emerald-200/80 pt-2 font-medium">
+                  Ukuran Mobile 9:16 • Teh Kampung Tambakroto
+                </p>
               </div>
             </div>
           </div>
@@ -245,17 +318,93 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
       <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-red-500/20 blur-3xl pointer-events-none"></div>
 
       <div className={`${standalone ? 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' : 'w-full'} relative z-10`}>
-        <div className="space-y-6">
-          {/* Unit Tag */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-800/80 border border-red-500/40 text-red-200 text-xs font-semibold backdrop-blur-xs">
-            <Utensils className="w-3.5 h-3.5 text-red-300" />
-            <span>Video & Narasi Khusus • Unit Usaha Dimsum Kampung</span>
+        <div className="space-y-6 sm:space-y-8">
+          {/* Unit Tag Header */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-800/80 border border-red-500/40 text-red-200 text-xs font-semibold backdrop-blur-xs">
+              <Utensils className="w-3.5 h-3.5 text-red-300" />
+              <span>Gambar Spanduk Resmi & Video Mobile • Unit Dimsum Kampung</span>
+            </div>
+            <span className="text-xs text-white font-bold bg-emerald-600 px-3 py-1 rounded-full flex items-center gap-1 shadow-xs">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              100% Bersertifikat Halal Indonesia
+            </span>
           </div>
 
-          {/* Main Content: Text & Video Side-by-Side */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+          {/* 1. GAMBAR SPANDUK RESMI DIMSUM KAMPUNG (BANNER SHOWCASE) */}
+          <div className="rounded-2xl overflow-hidden border-2 border-red-400/50 bg-stone-950 shadow-2xl shadow-red-950/60 transition-all">
+            <div className="px-4 py-2.5 bg-gradient-to-r from-red-900 via-rose-900 to-stone-950 border-b border-red-500/30 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <ImageIcon className="w-4 h-4 text-amber-300 shrink-0" />
+                <span className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                  Spanduk Resmi Kedai • DIMSUM KAMPUNG 100% HALAL
+                </span>
+              </div>
+              <button
+                onClick={() =>
+                  setActiveBannerModal({
+                    isOpen: true,
+                    url: BRAND_ASSETS.dimsumBanner,
+                    title: 'Spanduk Resmi Dimsum Kampung - 100% Halal',
+                    subtitle: 'Visual Brand Kedai Resmi Kemitraan Dimsum Kampung',
+                    unit: 'dimsum',
+                    features: [
+                      'Ilustrasi resmi dua pendiri Brand Kampung di meja santap hangat',
+                      'Logo resmi Halal Indonesia bersertifikat aman & berkah',
+                      'Visual dimsum siomay kukus hangat klakat bambu & topping tobiko',
+                      'Tipografi 3D ceria "DIMSUM KAMPUNG" dengan motif ombak oriental',
+                    ],
+                  })
+                }
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-700 hover:bg-red-600 text-amber-300 text-xs font-bold border border-red-400/40 transition-all cursor-pointer shadow-xs"
+                title="Klik untuk melihat gambar spanduk ukuran penuh"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+                <span>Perbesar Spanduk</span>
+              </button>
+            </div>
+
+            {/* Widescreen Banner Image */}
+            <div
+              className="relative aspect-[16/6] sm:aspect-[16/5] md:aspect-[16/4.6] w-full overflow-hidden cursor-pointer group bg-stone-900"
+              onClick={() =>
+                setActiveBannerModal({
+                  isOpen: true,
+                  url: BRAND_ASSETS.dimsumBanner,
+                  title: 'Spanduk Resmi Dimsum Kampung - 100% Halal',
+                  subtitle: 'Visual Brand Kedai Resmi Kemitraan Dimsum Kampung',
+                  unit: 'dimsum',
+                  features: [
+                    'Ilustrasi resmi dua pendiri Brand Kampung di meja santap hangat',
+                    'Logo resmi Halal Indonesia bersertifikat aman & berkah',
+                    'Visual dimsum siomay kukus hangat klakat bambu & topping tobiko',
+                    'Tipografi 3D ceria "DIMSUM KAMPUNG" dengan motif ombak oriental',
+                  ],
+                })
+              }
+            >
+              <img
+                src={BRAND_ASSETS.dimsumBanner}
+                alt="Spanduk Resmi Dimsum Kampung - 100% Halal"
+                className="w-full h-full object-cover object-center group-hover:scale-[1.015] transition-transform duration-500"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/banner-dimsum-kampung.jpg';
+                }}
+              />
+              {/* Hover Overlay */}
+              <div className="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                <span className="px-4 py-2 rounded-xl bg-black/80 text-white text-xs font-bold flex items-center gap-2 backdrop-blur-xs border border-white/20 shadow-2xl">
+                  <ZoomIn className="w-4 h-4 text-amber-300" />
+                  Klik untuk Memperbesar Gambar Spanduk
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 2. DEDICATED CONTENT: TEKS NARASI & PEMUTAR VIDEO FORMAT MOBILE */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-2">
             {/* Left: Text & Info */}
-            <div className="lg:col-span-7 space-y-4">
+            <div className="lg:col-span-7 space-y-5">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-heading tracking-tight text-white drop-shadow-sm">
@@ -316,93 +465,91 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
               </div>
             </div>
 
-            {/* Right: Dedicated Video Player Dimsum Kampung */}
-            <div className="lg:col-span-5">
-              <div className="relative rounded-2xl overflow-hidden border-2 border-red-400/40 shadow-2xl shadow-red-950/60 bg-stone-950 group">
-                <div className="relative aspect-[4/3] sm:aspect-video lg:aspect-[4/3] w-full">
-                  <video
-                    id="video-dimsum-kampung"
-                    ref={dimsumVideoRef}
-                    className="w-full h-full object-cover"
-                    autoPlay
-                    loop
-                    muted={isDimsumVideoMuted}
-                    playsInline
-                    poster={BRAND_ASSETS.dimsumBanner}
-                  >
-                    {customDimsumVideoUrl && (
-                      <source src={customDimsumVideoUrl} type="video/mp4" />
-                    )}
-                    <source src="/video-dimsum-kampung.mp4" type="video/mp4" />
-                    <source src="/dimsum-kampung.mp4" type="video/mp4" />
-                    <source
-                      src="https://assets.mixkit.co/videos/preview/mixkit-top-view-of-a-person-opening-a-steaming-pot-41551-large.mp4"
-                      type="video/mp4"
-                    />
-                    <img
-                      src={BRAND_ASSETS.dimsumBanner}
-                      alt="Dimsum Kampung Tambakroto"
+            {/* Right: Dedicated Video Player Dimsum Kampung (UKURAN MOBILE 9:16) */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center">
+              <div className="w-full max-w-[270px] sm:max-w-[295px]">
+                {/* Mobile Smartphone Frame Container */}
+                <div className="relative rounded-[2.5rem] p-2 bg-gradient-to-b from-stone-700 via-stone-900 to-black border-2 border-red-400/60 shadow-2xl shadow-red-950/80">
+                  {/* Top Camera Notch / Dynamic Island */}
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/90 rounded-full z-30 flex items-center justify-center gap-1.5 border border-white/10 shadow-xs">
+                    <span className="w-2 h-2 rounded-full bg-stone-700"></span>
+                    <span className="w-5 h-1 rounded-full bg-stone-800"></span>
+                  </div>
+
+                  {/* Video Box (9:16 Vertical Mobile Aspect Ratio) */}
+                  <div className="relative aspect-[9/16] w-full rounded-[2rem] overflow-hidden bg-black group">
+                    <video
+                      id="video-dimsum-kampung"
+                      ref={dimsumVideoRef}
                       className="w-full h-full object-cover"
-                    />
-                  </video>
-
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-stone-950/20 to-stone-950/30 pointer-events-none" />
-
-                  {/* Badge Video Live / Kedai */}
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-600/90 text-white text-[11px] font-bold shadow-md backdrop-blur-xs">
-                      <span className="w-2 h-2 rounded-full bg-red-200 animate-ping" />
-                      Video Kedai Dimsum
-                    </span>
-                  </div>
-
-                  {/* Controls: Audio Mute/Unmute & Select Local Video File */}
-                  <div className="absolute top-3 right-3 flex items-center gap-2">
-                    <label
-                      className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 hover:bg-black/80 text-[11px] text-red-200 border border-white/20 transition-all cursor-pointer shadow-md"
-                      title="Putar video rekaman Dimsum Kampung dari file perangkat"
+                      autoPlay
+                      loop
+                      muted={isDimsumVideoMuted}
+                      playsInline
+                      poster={BRAND_ASSETS.dimsumBanner}
                     >
-                      <Upload className="w-3 h-3 text-amber-300" />
-                      <span className="hidden sm:inline">Pilih Video Dimsum</span>
-                      <input
-                        ref={dimsumFileInputRef}
-                        type="file"
-                        accept="video/*"
-                        className="hidden"
-                        onChange={handleDimsumVideoUpload}
+                      <source src="/video-dimsum-kampung.mp4" type="video/mp4" />
+                      <source src="/dimsum-kampung.mp4" type="video/mp4" />
+                      <source
+                        src="https://assets.mixkit.co/videos/preview/mixkit-top-view-of-a-person-opening-a-steaming-pot-41551-large.mp4"
+                        type="video/mp4"
                       />
-                    </label>
-                    <button
-                      onClick={() => setIsDimsumVideoMuted(!isDimsumVideoMuted)}
-                      className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white transition-all backdrop-blur-xs border border-white/20 cursor-pointer shadow-md"
-                      title={isDimsumVideoMuted ? 'Nyalakan Suara Dimsum' : 'Bisukan Suara Dimsum'}
-                      aria-label="Toggle suara video dimsum"
-                    >
-                      {isDimsumVideoMuted ? (
-                        <VolumeX className="w-4 h-4" />
-                      ) : (
-                        <Volume2 className="w-4 h-4 text-red-300" />
-                      )}
-                    </button>
-                  </div>
+                      <img
+                        src={BRAND_ASSETS.dimsumBanner}
+                        alt="Dimsum Kampung Tambakroto"
+                        className="w-full h-full object-cover"
+                      />
+                    </video>
 
-                  {/* Bottom Caption */}
-                  <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-1 text-xs text-red-100">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 font-semibold text-white">
-                        <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
-                        <span>Kedai Tambakroto (Selatan Masjid)</span>
-                      </div>
-                      <span className="bg-emerald-500 text-white px-2 py-0.5 rounded text-[11px] font-bold">
-                        100% Halal
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-transparent to-stone-950/40 pointer-events-none" />
+
+                    {/* Live Mobile Badge */}
+                    <div className="absolute top-8 left-3 z-20 flex items-center gap-1">
+                      <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-600/90 text-white text-[10px] font-bold shadow-md backdrop-blur-xs">
+                        <Smartphone className="w-3 h-3 text-red-200" />
+                        <span>Reels / Shorts</span>
                       </span>
                     </div>
-                    <p className="text-[11px] text-stone-300 line-clamp-1">
-                      Kec. Sayung, Kab. Demak • Siomay, Mentai, Moza, Ekado
-                    </p>
+
+                    {/* Audio Mute/Unmute Control */}
+                    <div className="absolute top-8 right-3 z-20">
+                      <button
+                        onClick={() => setIsDimsumVideoMuted(!isDimsumVideoMuted)}
+                        className="p-2 rounded-full bg-black/60 hover:bg-black/80 text-white transition-all backdrop-blur-xs border border-white/20 cursor-pointer shadow-md"
+                        title={isDimsumVideoMuted ? 'Nyalakan Suara Dimsum' : 'Bisukan Suara Dimsum'}
+                        aria-label="Toggle suara video dimsum"
+                      >
+                        {isDimsumVideoMuted ? (
+                          <VolumeX className="w-3.5 h-3.5" />
+                        ) : (
+                          <Volume2 className="w-3.5 h-3.5 text-red-300" />
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Bottom Caption Overlay */}
+                    <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-1 text-xs text-red-100 z-20">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5 font-bold text-white text-xs">
+                          <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                          <span>Kedai Tambakroto</span>
+                        </div>
+                        <span className="bg-emerald-500 text-white px-2 py-0.5 rounded text-[10px] font-bold">
+                          100% Halal
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-stone-300 line-clamp-2">
+                        Siomay Kukus Bambu • Racikan Chili Oil Bawang Putih
+                      </p>
+                    </div>
                   </div>
                 </div>
+
+                {/* Subtitle Information */}
+                <p className="text-center text-[11px] text-red-200/80 pt-2 font-medium">
+                  Ukuran Mobile 9:16 • Kedai Dimsum Kampung
+                </p>
               </div>
             </div>
           </div>
@@ -413,16 +560,130 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
 
   // If filtered specifically to Teh Kampung
   if (activeUnit === 'teh') {
-    return renderTehKampungSection(true);
+    return (
+      <>
+        {renderTehKampungSection(true)}
+        {renderBannerModal()}
+      </>
+    );
   }
 
   // If filtered specifically to Dimsum Kampung
   if (activeUnit === 'dimsum') {
-    return renderDimsumKampungSection(true);
+    return (
+      <>
+        {renderDimsumKampungSection(true)}
+        {renderBannerModal()}
+      </>
+    );
+  }
+
+  // Modal Lightbox Component for High-Resolution Banner Inspection
+  function renderBannerModal() {
+    if (!activeBannerModal || !activeBannerModal.isOpen) return null;
+    const isTeh = activeBannerModal.unit === 'teh';
+
+    return (
+      <div
+        id="modal-lightbox-banner"
+        className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-md animate-fade-in"
+        onClick={() => setActiveBannerModal(null)}
+      >
+        <div
+          className={`relative max-w-5xl w-full bg-stone-900 border-2 ${
+            isTeh ? 'border-emerald-500' : 'border-red-500'
+          } rounded-3xl overflow-hidden shadow-2xl shadow-black text-white flex flex-col max-h-[92vh]`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Modal Header */}
+          <div
+            className={`px-5 py-3.5 flex items-center justify-between border-b ${
+              isTeh ? 'bg-emerald-950 border-emerald-800' : 'bg-red-950 border-red-800'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              {isTeh ? (
+                <Coffee className="w-5 h-5 text-emerald-400" />
+              ) : (
+                <Utensils className="w-5 h-5 text-red-400" />
+              )}
+              <div>
+                <h3 className="font-heading font-black text-sm sm:text-base text-white">
+                  {activeBannerModal.title}
+                </h3>
+                <p className="text-[11px] text-stone-300">{activeBannerModal.subtitle}</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setActiveBannerModal(null)}
+              className="p-1.5 rounded-full bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white transition-all cursor-pointer"
+              title="Tutup Preview"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Full-width High-Res Banner View */}
+          <div className="p-3 sm:p-5 overflow-y-auto flex-1 space-y-4">
+            <div className="rounded-2xl overflow-hidden border border-stone-700 bg-black shadow-inner">
+              <img
+                src={activeBannerModal.url}
+                alt={activeBannerModal.title}
+                className="w-full h-auto object-contain max-h-[60vh] mx-auto select-none"
+              />
+            </div>
+
+            {/* Banner Breakdown / Features */}
+            <div
+              className={`p-4 rounded-xl border text-xs sm:text-sm space-y-2 ${
+                isTeh
+                  ? 'bg-emerald-950/60 border-emerald-800/60 text-emerald-100'
+                  : 'bg-red-950/60 border-red-800/60 text-red-100'
+              }`}
+            >
+              <div className="font-bold flex items-center gap-2 text-amber-300">
+                <Sparkles className="w-4 h-4" />
+                <span>Detail Identitas Visual Banner Resmi:</span>
+              </div>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                {activeBannerModal.features.map((feat, idx) => (
+                  <li key={idx} className="flex items-start gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 text-amber-400 shrink-0" />
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Modal Footer */}
+          <div className="px-5 py-3 bg-stone-950 border-t border-stone-800 flex items-center justify-between text-xs">
+            <span className="text-stone-400">Hak Cipta © Brand Kampung Group • Tambakroto</span>
+            <div className="flex items-center gap-2">
+              <a
+                href={activeBannerModal.url}
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 font-semibold flex items-center gap-1.5 transition-all"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Buka Tab Penuh</span>
+              </a>
+              <button
+                onClick={() => setActiveBannerModal(null)}
+                className="px-4 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold transition-all cursor-pointer"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // In 'all' or 'combo' mode:
-  // Render Brand Kampung Header, followed by BOTH video sections clearly separated!
+  // Render Brand Kampung Parent Header, followed by BOTH sections with banners & videos!
   return (
     <div className="space-y-10 md:space-y-14">
       {/* Brand Kampung Parent Header */}
@@ -463,14 +724,14 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
                 className="px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-emerald-900/40 transition-all cursor-pointer whitespace-nowrap shrink-0"
               >
                 <Coffee className="w-4 h-4 shrink-0" />
-                <span>Lihat Video & Menu Teh</span>
+                <span>Lihat Banner & Video Teh</span>
               </button>
               <button
                 onClick={() => setActiveUnit('dimsum')}
                 className="px-5 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-red-900/40 transition-all cursor-pointer whitespace-nowrap shrink-0"
               >
                 <Utensils className="w-4 h-4 shrink-0" />
-                <span>Lihat Video & Menu Dimsum</span>
+                <span>Lihat Banner & Video Dimsum</span>
               </button>
               <button
                 onClick={() => setActiveUnit('combo')}
@@ -484,21 +745,23 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
         </div>
       </section>
 
-      {/* DUA BAGIAN VIDEO TERPISAH (SEPARATED VIDEO SHOWCASES) */}
+      {/* DUA BAGIAN TERPISAH (BANNER RESMI + VIDEO MOBILE) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        {/* Bagian Terpisah 1: Video Teh Kampung */}
+        {/* Bagian Terpisah 1: Banner & Video Teh Kampung */}
         <div className="space-y-3">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-2 text-emerald-800">
               <Coffee className="w-5 h-5 text-emerald-600" />
-              <span className="font-extrabold text-sm uppercase tracking-wider">Video Unit 01 • Kesegaran Teh Kampung</span>
+              <span className="font-extrabold text-sm uppercase tracking-wider">
+                Unit 01 • Kesegaran & Spanduk Resmi Teh Kampung
+              </span>
             </div>
-            <span className="text-xs text-stone-500 font-medium">Player Mandiri #1</span>
+            <span className="text-xs text-stone-500 font-medium">Format Video Mobile</span>
           </div>
           {renderTehKampungSection(false)}
         </div>
 
-        {/* Pemisah Elegan Antar Video */}
+        {/* Pemisah Elegan Antar Unit */}
         <div className="relative py-2 flex items-center justify-center">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-stone-300"></div>
@@ -510,18 +773,23 @@ export const BrandHero: React.FC<BrandHeroProps> = ({
           </div>
         </div>
 
-        {/* Bagian Terpisah 2: Video Dimsum Kampung */}
+        {/* Bagian Terpisah 2: Banner & Video Dimsum Kampung */}
         <div className="space-y-3">
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-2 text-red-800">
               <Utensils className="w-5 h-5 text-red-600" />
-              <span className="font-extrabold text-sm uppercase tracking-wider">Video Unit 02 • Kehangatan Dimsum Kampung</span>
+              <span className="font-extrabold text-sm uppercase tracking-wider">
+                Unit 02 • Kehangatan & Spanduk Resmi Dimsum Kampung
+              </span>
             </div>
-            <span className="text-xs text-stone-500 font-medium">Player Mandiri #2</span>
+            <span className="text-xs text-stone-500 font-medium">Format Video Mobile</span>
           </div>
           {renderDimsumKampungSection(false)}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      {renderBannerModal()}
     </div>
   );
 };

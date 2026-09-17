@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TEH_KAMPUNG_INFO, DIMSUM_KAMPUNG_INFO } from '../data/brandData';
+import { TEH_KAMPUNG_INFO, DIMSUM_KAMPUNG_INFO, BRAND_ASSETS } from '../data/brandData';
 import {
   Coffee,
   Utensils,
@@ -14,6 +14,7 @@ import {
   ExternalLink,
   Store,
   ChevronDown,
+  Image as ImageIcon,
 } from 'lucide-react';
 
 interface UnitDetailSectionProps {
@@ -90,7 +91,34 @@ export const UnitDetailSection: React.FC<UnitDetailSectionProps> = ({
         </div>
 
         {/* Content Container */}
-        <div className="space-y-12">
+        <div className="space-y-8 md:space-y-12">
+          {/* Spanduk Resmi Unit Usaha */}
+          <div className={`rounded-3xl overflow-hidden border-2 ${cardBorder} bg-stone-900 shadow-lg`}>
+            <div className={`px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-2 border-b ${
+              isTeh ? 'bg-emerald-900/90 border-emerald-700/50 text-emerald-100' : 'bg-red-900/90 border-red-700/50 text-red-100'
+            }`}>
+              <div className="flex items-center gap-2">
+                <ImageIcon className="w-4 h-4 text-amber-300" />
+                <span className="text-xs sm:text-sm font-bold text-white">
+                  Identitas Visual & Spanduk Resmi: {isTeh ? 'TEH KAMPUNG TAMBAKROTO' : 'DIMSUM KAMPUNG 100% HALAL'}
+                </span>
+              </div>
+              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-black/40 text-amber-300 border border-white/10">
+                {isTeh ? '@tehkampung kemitraan' : 'Sertifikat Halal Indonesia'}
+              </span>
+            </div>
+            <div className="relative aspect-[16/6] sm:aspect-[16/5] md:aspect-[16/4.5] w-full overflow-hidden bg-stone-950">
+              <img
+                src={isTeh ? BRAND_ASSETS.tehBanner : BRAND_ASSETS.dimsumBanner}
+                alt={`Spanduk Resmi ${info.name}`}
+                className="w-full h-full object-cover object-center"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = isTeh ? '/banner-teh-kampung.jpg' : '/banner-dimsum-kampung.jpg';
+                }}
+              />
+            </div>
+          </div>
+
           {/* 1. Brand Story & Heritage */}
           <div className={`bg-white rounded-3xl p-6 sm:p-10 border ${cardBorder} shadow-sm space-y-6`}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
